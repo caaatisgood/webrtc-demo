@@ -22,7 +22,7 @@ let init = async () => {
   document.getElementById("user-1").srcObject = localStream
 }
 
-let createOffer = async () => {
+let createPeerConnection = (sdpType) => {
   peerConnection = new RTCPeerConnection(servers)
 
   remoteStream = new MediaStream()
@@ -44,10 +44,14 @@ let createOffer = async () => {
   peerConnection.onicecandidate = async (event) => {
     if (event.candidate) {
       // update the value every time a new candidate is received
-      document.getElementById("offer-sdp").value =
+      document.getElementById(`${sdpType}-sdp`).value =
         JSON.stringify(peerConnection.localDescription, null, 2)
     }
   }
+}
+
+let createOffer = async () => {
+  createPeerConnection("offer")
 
   let offer = await peerConnection.createOffer()
   await peerConnection.setLocalDescription(offer)
@@ -57,28 +61,7 @@ let createOffer = async () => {
 }
 
 let createAnswer = async () => {
-  peerConnection = new RTCPeerConnection(servers)
-
-  remoteStream = new MediaStream()
-  document.getElementById("user-2").srcObject = remoteStream
-
-  localStream.getTracks().forEach(track => {
-    peerConnection.addTrack(track, localStream)
-  })
-
-  peerConnection.ontrack = async (event) => {
-    event.streams[0].getTracks().forEach(track => {
-      remoteStream.addTrack(track)
-    })
-  }
-
-  peerConnection.onicecandidate = async (event) => {
-    if (event.candidate) {
-      // update the value every time a new candidate is received
-      document.getElementById("answer-sdp").value =
-        JSON.stringify(peerConnection.localDescription, null, 2)
-    }
-  }
+  createPeerConnection("answer")
 
   let offer = document.getElementById("offer-sdp").value
   if (!offer) {
