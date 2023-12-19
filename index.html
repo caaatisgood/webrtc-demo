@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      width: 800px;
+      margin: 0 auto;
+    }
+    video {
+      width: 100%;
+      border: 2px solid salmon;
+      background: #999;
+    }
+    #videos {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 1em;
+      padding: 10px;
+    }
+    textarea{
+      height: 50px;
+      width: 100%;
+    }
+    @media screen and (max-width: 800px) {
+      body {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="videos">
+    <div>
+      local
+      <video class="video-player" id="user-1" autoplay playsinline></video>
+    </div>
+    <div>
+      peer
+      <video class="video-player" id="user-2" autoplay playsinline></video>
+    </div>
+  </div>
+
+  <button id="create-offer">Create Offer</button>
+  <label>SDP Offer</label>
+  <textarea name="" id="offer-sdp" cols="30" rows="10"></textarea>
+
+  <button id="create-answer">Create Answer</button>
+  <label>SDP Answer</label>
+  <textarea name="" id="answer-sdp" cols="30" rows="10"></textarea>
+
+  <br />
+  <button id="add-answer">Add Answer</button>
+
+  <script src="./main.js" />
+</body>
+</html>
